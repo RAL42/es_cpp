@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage{graphicx} 
+\usepackage{listings}
+
+\title{Programmazione \\[1ex] \large (sugli appunti di andrea lorenz)}
+\author{Riccardo Antonio Larocca }
+\date{August 2023}
+
+\begin{document}
+\maketitle
+
+\section{APPUNTI}
+
+
+\begin{enumerate}
+
+    \item [-] non è possibile accedere direttamente alla memoria tramite c++ -> si usano gli oggetti (pag 2); 
+    \item[-] Alcuni modi per inizializzare una variabile:
+    \begin{itemize}
+        \item int b = 5; //initializer after equals sign
+        \item int c (6); //initializer in parenthesis
+        \item int d \{7\}; //initializer in braces. This is preferred usually
+    \end{itemize}
+    \item[-] Tipi di variabile:
+    \begin{itemize}
+        \item \textit{int}: occupano una dimensione di 4 bytes (tipicamente, ma comunque maggiore o uguale, COS\'I PER TUTTI I PROSSIMI TIPI). Possono essere signed (positivi o negativi) e sono divisi in \textbf{short}, \textbf{long}, \textbf{long long};
+
+        \item \textit{bool} (On/Off): occupano 1 Bytes e sono \textbf{salvati come interi} (infatti restituiscono 1 (vero) o 0 (falso));
+        
+        \item \textit{char} (singolo carattere): occupano 1 Bytes, salvati come interi in FORMATO ASCII (a ogni carattere è assegnato un numero intero da 0 a 127)
+        
+        \item \textit{floating points} (\textbf{double}, \textbf{long double}, \textbf{float}): hanno la virgola e sono Signed. 
+        
+        I float hanno una precisione di 7 cifre decimali e occupano 4 Bytes, i Double hanno una precisione di 16 cifre decimali e occupano 8 Bytes.
+
+        "std::setprecision([numero]); "
+
+        ATTENZIONE: la matematica dei fp non è associativa;
+        meglio non usare operatori di comparazione con questi numeri, a causa delle approssimazioni (non possono rappresentare i numeri reali perche questi hanno infinite cifre significative)
+        
+        \item \textit{string} (testo, insieme di caratteri): va memorizzato tra virgolette.
+
+        Per trasformare una qualsiasi variabile in una stringa si usa \textit{std::to\_string()}
+
+        Esempio:
+        \begin{lstlisting}[language=c++]
+        int main ()
+{
+  std::string pi = "pi is " + std::to_string(3.1415926);
+  std::string perfect = std::to_string(1+2+4+7+14) + " is a 
+  perfect number";
+  std::cout << pi << '\n';      //print: pi is 3.141593
+  std::cout << perfect << '\n'      //print: 28 is a perfect number;
+  return 0;
+}
+        \end{lstlisting}
+        
+        \item \textit{void}: alla variabile non è assegnato alcun tipo, inolte non restituisce alcun valore. 
+    \end{itemize}
+
+\item[-] \textit{sizeof()}: restituisce la dimensione del tipo o della variabile
+
+\end{enumerate}
+
+
+\paragraph{TYPE CONVERSION}
+\begin{enumerate}
+    \item[-] \textit{static\_cast\<nuovo tipo\>(valore)} esegue la conversione esplicitamente PER TRONCAMENTO. In una funzione che prende, per es, un int, posso dargli un float e lei converte IMPLICITAMENTE il numero, ma potrebbero sorgere errori quando si ha un codice piu complicato, per questo serve static\_cast(?);
+    \item[-] inizializzare con le PARENTESI GRAFFE non permette conversioni con perdita di informazione (troncamento);
+    \item[-] con la libreria \textit{cmath} si introducono le conversioni sempre per eccesso (ceil()), per difetto (floor()), e per arrotondamento classico (round())
+\end{enumerate}  
+
+\paragraph{costanti} Si dividono in \textbf{literal costant}, ossia quelle non nominate, e in \textbf{Symbolic costant}, ossia le variabili costanti, che dichiaro con il \textit{const} davanti il tipo e il nome
+
+Possono essere di tipo tun
+
+\section{PROGETTO}
+
+
+\ end{document}
