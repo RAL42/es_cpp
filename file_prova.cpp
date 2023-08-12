@@ -228,7 +228,7 @@ int main(){
     print(oggetto1);
 }*/
 
-/* #include<iostream>
+ #include<iostream>
 
 class Nuovo_tipo{
     float a;
@@ -247,4 +247,4 @@ class Nuovo_tipo{
 int main(){
     Nuovo_tipo oggetto1{342.34, 235232.32};
     oggetto1.print();
-}*/
+}
