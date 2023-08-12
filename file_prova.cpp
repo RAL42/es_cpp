@@ -208,3 +208,43 @@ int main(){
 
 //-------------------------------------------------------------------------------------------------------------------
 
+//ESEMPIO STRUCT VS CLASS
+/*#include<iostream>
+
+struct Nuovo_tipo {         //Questa è una struct e dentro posso scrivergli solo dei tipi, 
+                            //NON POSSO SCRIVERE FUNZIONI DENTRO (a differenza delle class), 
+                            //come nell'esempio di prima in cui la funzione print la metto 
+                            //nella parte public della class
+    float a;
+    float b;
+};
+
+void print(const Nuovo_tipo& oggetto){
+    std::cout << "a = " << oggetto.a << " ; b = " << oggetto.b << '\n';
+}
+
+int main(){
+    Nuovo_tipo oggetto1{342.34, 235232.32};
+    print(oggetto1);
+}*/
+
+/* #include<iostream>
+
+class Nuovo_tipo{
+    float a;
+    float b;
+
+    public:
+    Nuovo_tipo (float a_, float b_) : a{a_}, b{b_} {} 
+
+    void print(){
+        std::cout<<"a = " << a << " ; b = " << b << '\n';
+    }
+};
+
+
+
+int main(){
+    Nuovo_tipo oggetto1{342.34, 235232.32};
+    oggetto1.print();
+}*/
