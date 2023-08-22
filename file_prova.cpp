@@ -211,6 +211,8 @@ int main(){
 //ESEMPIO STRUCT VS CLASS
 /*#include<iostream>
 
+//STRUCT ESEMPIO
+
 struct Nuovo_tipo {         //Questa è una struct e dentro posso scrivergli solo dei tipi, 
                             //NON POSSO SCRIVERE FUNZIONI DENTRO (a differenza delle class), 
                             //come nell'esempio di prima in cui la funzione print la metto 
@@ -228,7 +230,10 @@ int main(){
     print(oggetto1);
 }*/
 
- #include<iostream>
+
+//CLASS PRIMO ESEMPIO
+
+/* #include<iostream>
 
 class Nuovo_tipo{
     float a;
@@ -247,4 +252,85 @@ class Nuovo_tipo{
 int main(){
     Nuovo_tipo oggetto1{342.34, 235232.32};
     oggetto1.print();
+}*/
+
+//CLASS SECONDO ESEMPIO
+
+/*#include<iostream>
+
+class Nuovo_tipo
+{
+private:
+    float a;
+    float b;
+public:
+    Nuovo_tipo(float x, float y){
+        a = x;
+        b = y; }
+    
+    void print(){
+        std::cout<<"a = " << a << " ; b = " << b << '\n';
+    }  
+};
+
+int main(){
+    Nuovo_tipo oggetto1 {342.32, 342.23};
+    oggetto1.print();
+}*/
+
+//-------------------------------------------------------------------------------------------------------------------
+//PROVA WHILE
+/*#include<iostream>
+
+int main(){
+    int i {1};
+    while (i<=50)
+    {
+        std::cout<<"0";
+
+    if(i % 10 == 0){
+        std::cout<<'\n';
+        }
+
+    ++i;
+    }
+    
+}*/
+
+//-------------------------------------------------------------------------------------------------------------------
+//PROVA FOR con 2 VARIABILI
+
+/*#include<iostream>
+
+int main(){
+    for(int x{0}, y{3}; x<10 ; ++x, --y){
+        std::cout<< x << " " << y << " " ;
+    }
+}*/
+
+//-------------------------------------------------------------------------------------------------------------------
+// ESEMPIO SWITCH CON DICHIARAZIONE E INIZIALIZZAZIONE VARIABILI
+#include<iostream>
+int main(){
+    int x;
+std::cout<<"x = "; 
+std::cin>> x;
+
+switch (x) {
+    int a; // okay: declaration is allowed before the case labels
+    //int b{ 5 }; // illegal: initialization is not allowed before the case labels
+
+case 1:
+    int y; // okay but bad practice: declaration is allowed within a case
+    y = 4; // okay: assignment is allowed
+break;
+
+case 2:
+    //int z{ 4 }; // illegal: initialization is not allowed if subsequent cases exist
+    y = 5; // okay: y was declared above, so we can use it here too
+break;
+
+case 3:
+break;
+}
 }
