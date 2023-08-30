@@ -1,4 +1,4 @@
-//TYPE CONVERSION
+// TYPE CONVERSION
 /*
 #include <iostream>
 void print(int a){
@@ -13,26 +13,26 @@ int main(){
     std::cin>> b;
     print(b);*/
 
-    //print(2);     //print 2
-    //print(2.22);  //print 2
+// print(2);     //print 2
+// print(2.22);  //print 2
 
-  // print(static_cast<int>(3.2));
+// print(static_cast<int>(3.2));
 //}
 
 //-------------------------------------------------------------------------------------------------------------------
 
-
-//INTRODUZIONE A IOSTREAM,  STD::GETLINE
+// INTRODUZIONE A IOSTREAM,  STD::GETLINE
 /*
 #include<iostream>
 #include<string>
 
 int main(){
-    std::cout<<"SCRIVI UNA FRASE IN INPUT \n";
-    std::string frase{};
-    std::getline(std::cin, frase);  //argomento 1: da dove vuoi prendere la "linea" (sempre da cin); argomento 2: dove la vuoi salvare
-    std::cout<<frase << " EZ \n";
-    }*/
+std::cout<<"SCRIVI UNA FRASE IN INPUT \n";
+std::string frase{};
+std::getline(std::cin, frase);  //argomento 1: da dove vuoi prendere la
+    "linea" (sempre da cin); argomento 2: dove la vuoi salvare 
+std::cout<<frase << "EZ \n";
+}*/
 
 //-------------------------------------------------------------------------------------------------------------------
 
@@ -46,14 +46,14 @@ int main(){
 
 //-------------------------------------------------------------------------------------------------------------------
 
-//SMALLEST OF N NUMBER con ciclo for
+// SMALLEST OF N NUMBER con ciclo for
 /*
 #include<iostream>
 int main(){
-    int number;    //errore inizializzare number a 0, il risultato farà sempre 0 siccome pongo smallest=number
-    int N{};
+    int number;    //errore inizializzare number a 0, il risultato farà sempre 0
+siccome pongo smallest=number int N{};
 
-    std::cout<<"quanti numeri hai? \n"; 
+    std::cout<<"quanti numeri hai? \n";
     std::cin>>N;
     std::cout<<number<<'\n';
 
@@ -64,25 +64,25 @@ int main(){
 
         if(variabile_cavia<smallest){
             smallest=variabile_cavia;
-        }        
+        }
     };
     std::cout<<"il piu piccolo è: " << smallest << '\n';
 }*/
 
 //-------------------------------------------------------------------------------------------------------------------
-//SMALLEST OF N NUMBER con ciclo while
+// SMALLEST OF N NUMBER con ciclo while
 
 /* #include<iostream>
 int main(){
     int number;
     int N{};
 
-    std::cout<<"quanti numeri hai? \n"; 
+    std::cout<<"quanti numeri hai? \n";
     std::cin>>N;
 
     int smallest;
     int i = 0;
-    
+
     std::cout<<"Primo check "<<smallest<<'\n';        //primo check
 
     bool first_time=true;
@@ -90,15 +90,16 @@ int main(){
         int variabile_cavia;
         std::cout<<"inserisci il numero \n";
         std::cin>>variabile_cavia;
-        
-        if(first_time){                 //per assegnare il primo valore che do in input alla variabile smallest, altrimenti è un numero qualsiasi (poiche non è inizializzata) 
-            smallest=variabile_cavia;   //LO ESEGUE UNA VOLTA 
+
+        if(first_time){                 //per assegnare il primo valore che do
+in input alla variabile smallest, altrimenti è un numero qualsiasi (poiche non è
+inizializzata) smallest=variabile_cavia;   //LO ESEGUE UNA VOLTA
             first_time=false;
             std::cout<<"Secondo check "<<smallest<<'\n';        //secondo check
-        };       
+        };
         if(variabile_cavia<smallest){
             smallest=variabile_cavia;
-        };       
+        };
     ++i;
     };
     std::cout<<"il piu piccolo è: " << smallest << '\n';
@@ -107,10 +108,10 @@ int main(){
 
 //-------------------------------------------------------------------------------------------------------------------
 
-//FUNCTION
+// FUNCTION
 /*
 #include<iostream>          //NOTA: LA FUNZIONE RITORNA UN INTERO
-                            // NONOSTANTE IL RISULTATO SIA UN FLOAT. 
+                            // NONOSTANTE IL RISULTATO SIA UN FLOAT.
 int myfun(float x){         //ARROTONDA per troncamento
     return x*x;
 }
@@ -122,7 +123,7 @@ int main(){
 
 //-------------------------------------------------------------------------------------------------------------------
 
-//REFERENCE
+// REFERENCE
 /*
 #include<iostream>
 int main(){
@@ -139,14 +140,14 @@ int main(){
    // std::cout<< ri << '\n'; //print 33
 
    // ri==32 ? std::cout<<"cacca \n" : std::cout<<"pupu \n"; //prints pupu
-    
+
    // ri=54;
    // std::cout<< ri << '\n'; //print 33
 }*/
 
 //-------------------------------------------------------------------------------------------------------------------
 
-//STRUCT
+// STRUCT
 /* #include<iostream>
 
 struct Boid
@@ -176,7 +177,7 @@ int main() {
 
 //-------------------------------------------------------------------------------------------------------------------
 
-//COPY CONSTRUCTOR
+// COPY CONSTRUCTOR
 /*#include<iostream>
 
 class Roba_a_caso {
@@ -185,10 +186,12 @@ class Roba_a_caso {
     int b;
 
     public:
-    Roba_a_caso(int a_, int b_) : a{a_}, b{b_} {std::cout<<"Using normal constructor \n";}   //SENZA QUESTO NON POTREI INIZIALIZZARE "oggetto1",
-                                                                                             // è UN CONSTRUTTORE (UNA FUNZIONE), è PUBBLICO E 
-                                                                                             //POICHE "è DENTRO la classe" ha accesso ai membri PRIVATI 
-    Roba_a_caso(Roba_a_caso& Elemento) : a{Elemento.a}, b{Elemento.b} {std::cout<<"Using Copy constructor \n";} 
+    Roba_a_caso(int a_, int b_) : a{a_}, b{b_} {std::cout<<"Using normal
+constructor \n";}   //SENZA QUESTO NON POTREI INIZIALIZZARE "oggetto1",
+                                                                                             // è UN CONSTRUTTORE (UNA FUNZIONE), è PUBBLICO E
+                                                                                             //POICHE "è DENTRO la classe" ha accesso ai membri PRIVATI
+    Roba_a_caso(Roba_a_caso& Elemento) : a{Elemento.a}, b{Elemento.b}
+{std::cout<<"Using Copy constructor \n";}
 
 void print(){
     std::cout<<"a = " << a << " ; b = " << b << '\n';
@@ -208,14 +211,14 @@ int main(){
 
 //-------------------------------------------------------------------------------------------------------------------
 
-//ESEMPIO STRUCT VS CLASS
+// ESEMPIO STRUCT VS CLASS
 /*#include<iostream>
 
 //STRUCT ESEMPIO
 
-struct Nuovo_tipo {         //Questa è una struct e dentro posso scrivergli solo dei tipi, 
-                            //NON POSSO SCRIVERE FUNZIONI DENTRO (a differenza delle class), 
-                            //come nell'esempio di prima in cui la funzione print la metto 
+struct Nuovo_tipo {         //Questa è una struct e dentro posso scrivergli solo dei tipi,
+                            //NON POSSO SCRIVERE FUNZIONI DENTRO (a differenza delle class),
+                            //come nell'esempio di prima in cui la funzione print la metto
                             //nella parte public della class
     float a;
     float b;
@@ -230,8 +233,7 @@ int main(){
     print(oggetto1);
 }*/
 
-
-//CLASS PRIMO ESEMPIO
+// CLASS PRIMO ESEMPIO
 
 /* #include<iostream>
 
@@ -240,7 +242,7 @@ class Nuovo_tipo{
     float b;
 
     public:
-    Nuovo_tipo (float a_, float b_) : a{a_}, b{b_} {} 
+    Nuovo_tipo (float a_, float b_) : a{a_}, b{b_} {}
 
     void print(){
         std::cout<<"a = " << a << " ; b = " << b << '\n';
@@ -254,7 +256,7 @@ int main(){
     oggetto1.print();
 }*/
 
-//CLASS SECONDO ESEMPIO
+// CLASS SECONDO ESEMPIO
 
 /*#include<iostream>
 
@@ -267,10 +269,10 @@ public:
     Nuovo_tipo(float x, float y){
         a = x;
         b = y; }
-    
+
     void print(){
         std::cout<<"a = " << a << " ; b = " << b << '\n';
-    }  
+    }
 };
 
 int main(){
@@ -279,7 +281,7 @@ int main(){
 }*/
 
 //-------------------------------------------------------------------------------------------------------------------
-//PROVA WHILE
+// PROVA WHILE
 /*#include<iostream>
 
 int main(){
@@ -294,11 +296,11 @@ int main(){
 
     ++i;
     }
-    
+
 }*/
 
 //-------------------------------------------------------------------------------------------------------------------
-//PROVA FOR con 2 VARIABILI
+// PROVA FOR con 2 VARIABILI
 
 /*#include<iostream>
 
@@ -310,27 +312,76 @@ int main(){
 
 //-------------------------------------------------------------------------------------------------------------------
 // ESEMPIO SWITCH CON DICHIARAZIONE E INIZIALIZZAZIONE VARIABILI
-#include<iostream>
-int main(){
-    int x;
-std::cout<<"x = "; 
-std::cin>> x;
 
-switch (x) {
-    int a; // okay: declaration is allowed before the case labels
-    //int b{ 5 }; // illegal: initialization is not allowed before the case labels
+/*#include <iostream>
+int main() {
+  int x;
+  std::cout << "x = ";
+  std::cin >> x;
 
-case 1:
-    int y; // okay but bad practice: declaration is allowed within a case
-    y = 4; // okay: assignment is allowed
-break;
+  switch (x) {
+    int a;  // okay: declaration is allowed before the case labels
+      // int b{ 5 }; // illegal: initialization is not allowed before the case
+      // labels
 
-case 2:
-    //int z{ 4 }; // illegal: initialization is not allowed if subsequent cases exist
-    y = 5; // okay: y was declared above, so we can use it here too
-break;
+    case 1:
+      int y;  // okay but bad practice: declaration is allowed within a case
+      y = 4;  // okay: assignment is allowed
+      break;
 
-case 3:
-break;
+    case 2:
+      // int z{ 4 }; // illegal: initialization is not allowed if subsequent
+      // cases exist
+      y = 5;  // okay: y was declared above, so we can use it here too
+      break;
+
+    case 3:
+      break;
+  }
+}*/
+
+//-------------------------------------------------------------------------------------------------------------------
+
+// NESTED NAMESPACES
+
+/*#include <iostream>
+
+namespace cacca {
+namespace pupu {
+void merda() { std::cout << "cacca::pupu::merda() \n"; }
+}  // namespace pupu
+}  // namespace cacca
+
+namespace piscio = cacca::pupu;
+
+int main() {
+    cacca::pupu::merda();
+    piscio::merda();
+    //stampano la stessa cosa
+
+}*/
+
+//-------------------------------------------------------------------------------------------------------------------
+// TEMPLATE es1
+/*#include <iostream>
+
+template <typename T>
+
+auto cacca(T a, T b) {
+  return (a / b);
 }
+
+int main() { std::cout << cacca<float>(3, 2) << std::endl; }
+*/
+
+// TEMPLATE es
+
+#include <iostream>
+template <typename T, typename U>
+auto max(T x, U y) {
+  return (x > y) ? x : y;
+}
+int main() {
+  std::cout << max<int, float>(2, 3.5) << '\n';
+  return 0;
 }

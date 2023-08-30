@@ -30,6 +30,9 @@ int main() {
                 nome_finestra.close();
             }
         }
+
+      sf::Vertex p1s(sf::Vector2f(50,50), sf::Color::Red);
+
         nome_finestra.clear();
     //nome_finestra.draw(stringa);
         nome_finestra.display();
