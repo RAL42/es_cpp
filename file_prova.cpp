@@ -30,7 +30,7 @@ int main(){
 std::cout<<"SCRIVI UNA FRASE IN INPUT \n";
 std::string frase{};
 std::getline(std::cin, frase);  //argomento 1: da dove vuoi prendere la
-    "linea" (sempre da cin); argomento 2: dove la vuoi salvare 
+    "linea" (sempre da cin); argomento 2: dove la vuoi salvare
 std::cout<<frase << "EZ \n";
 }*/
 
@@ -216,9 +216,12 @@ int main(){
 
 //STRUCT ESEMPIO
 
-struct Nuovo_tipo {         //Questa è una struct e dentro posso scrivergli solo dei tipi,
-                            //NON POSSO SCRIVERE FUNZIONI DENTRO (a differenza delle class),
-                            //come nell'esempio di prima in cui la funzione print la metto
+struct Nuovo_tipo {         //Questa è una struct e dentro posso scrivergli solo
+dei tipi,
+                            //NON POSSO SCRIVERE FUNZIONI DENTRO (a differenza
+delle class),
+                            //come nell'esempio di prima in cui la funzione
+print la metto
                             //nella parte public della class
     float a;
     float b;
@@ -374,9 +377,9 @@ auto cacca(T a, T b) {
 int main() { std::cout << cacca<float>(3, 2) << std::endl; }
 */
 
-// TEMPLATE es
+// TEMPLATE es2
 
-#include <iostream>
+/*#include <iostream>
 template <typename T, typename U>
 auto max(T x, U y) {
   return (x > y) ? x : y;
@@ -384,4 +387,43 @@ auto max(T x, U y) {
 int main() {
   std::cout << max<int, float>(2, 3.5) << '\n';
   return 0;
+}*/
+
+//-------------------------------------------------------------------------------------------------------------------
+// ES vector
+/*
+#include <iostream>
+#include <vector>
+
+template <typename T>
+void print(std::vector<T> v) {
+  for (int i = 0; i < v.size(); i++) {
+    std::cout << "Elemento " << i << " = " << v[i] << '\n';
+  }
 }
+
+int main() {
+  std::vector<int> v {0,1,2,5,6,4,7};
+  v.push_back(3);
+  v[6] = 43;
+  print(v);
+}*/
+
+//-------------------------------------------------------------------------------------------------------------------
+// PROVA DRAW_FUNCTION
+
+#include <iostream>
+
+#include "draw_function.hpp"
+
+int main() {
+  double y = i * i * i;
+  //double* ptr_y{&y};
+
+  //std::cout << "ptr_y = " << ptr_y << '\n';
+  //std::cout << "*ptr_y = " << *ptr_y << '\n';
+
+  draw_function(y);
+  print_fun(function);
+}
+

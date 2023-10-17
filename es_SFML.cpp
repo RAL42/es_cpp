@@ -31,12 +31,14 @@ int main() {
             }
         }
 
-      sf::Vertex p1s(sf::Vector2f(50,50), sf::Color::Red);
-
+      //sf::Vertex p1s(sf::Vector2f(50,50), sf::Color::Red);
+    sf::CircleShape cerchio(20);
+    cerchio.setPosition(500, 250);
         nome_finestra.clear();
+        nome_finestra.draw(cerchio);
     //nome_finestra.draw(stringa);
         nome_finestra.display();
-    }
+    }   
 
  
 }
