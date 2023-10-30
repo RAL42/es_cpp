@@ -8,7 +8,7 @@ float const b = 5;
 
 sf::Vector2f function(sf::Vector2f vector)
 {
-    double modulus_squared {std::pow(vector.x, 2)+std::pow(vector.y, 2)};
+    //double modulus_squared {std::pow(vector.x, 2)+std::pow(vector.y, 2)};
     sf::Vector2f result{-a*vector.y, b*vector.x};
     return result;
 }
@@ -27,10 +27,8 @@ int main()
     sf::Vector2f last_state{0, 0};
     sf::Vector2f current_state(0, window_size.y / 4);
 
-    sf::Vertex x_axis[] = {sf::Vertex(sf::Vector2f(-window_size.x, 0)),
-                           sf::Vertex(sf::Vector2f(window_size.x, 0))};
-    sf::Vertex y_axis[] = {sf::Vertex(sf::Vector2f(0, -window_size.y/2)),
-                           sf::Vertex(sf::Vector2f(0, window_size.y/2))};
+    sf::Vertex x_axis[] = {sf::Vertex(sf::Vector2f(-window_size.x, 0)), sf::Vertex(sf::Vector2f(window_size.x, 0))};
+    sf::Vertex y_axis[] = {sf::Vertex(sf::Vector2f(0, -window_size.y/2)), sf::Vertex(sf::Vector2f(0, window_size.y/2))};
     sf::VertexArray vertex_array;
 
     while (window.isOpen())

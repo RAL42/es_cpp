@@ -24,7 +24,7 @@ class PM { // Punto Materiale
 
     s.setRadius(5);
     s.setPosition(pos);
-    s.setFillColor(sf::Color::Green);
+    s.setFillColor(sf::Color::White);
   }
   void draw(sf::RenderWindow& wind){
     s.setPosition(pos);

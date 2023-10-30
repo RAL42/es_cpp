@@ -2,7 +2,7 @@
 //#include "lib_phys.hpp"
 #include<SFML/Graphics.hpp>
 //#include "rk4_II.hpp"
-#include "prova_rk_seconda_versione.hpp"
+#include "prova_rk_terza_versione.hpp"
 
 int main(){
      int n_PM{20};
@@ -11,10 +11,10 @@ int main(){
     
     Hooke spring(10); // solo la costante elastica, la lunghezza a riposo è nella classe chain
 
-    float W{10000}; //velocità angolare
+    float W{10}; //velocità angolare
 
      float dt{.1};
-     float t_max{5.};
+     float t_max{10.};
     
     unsigned const display_width = .7 * sf::VideoMode::getDesktopMode().width;
     unsigned const display_height = .7 * sf::VideoMode::getDesktopMode().height;
@@ -25,11 +25,10 @@ int main(){
     sf::View view {sf::Vector2f{0,0}, window_size};    //view permette di cambiare l'origine, il primo vettore è l'origine, il secondo e la size della window
     window.setView(view);
     
-    sf::Vertex x_axis[] = {sf::Vertex(sf::Vector2f(-window_size.x, 0)), sf::Vertex(sf::Vector2f(window_size.x, 0))};
-    sf::Vertex y_axis[] = {sf::Vertex(sf::Vector2f(0, -window_size.y/2)), sf::Vertex(sf::Vector2f(0, window_size.y/2))};
+   // sf::Vertex x_axis[] = {sf::Vertex(sf::Vector2f(-window_size.x, 0)), sf::Vertex(sf::Vector2f(window_size.x, 0))};
+   // sf::Vertex y_axis[] = {sf::Vertex(sf::Vector2f(0, -window_size.y/2)), sf::Vertex(sf::Vector2f(0, window_size.y/2))};
    
-    std::vector<Chain> evolution_of_chains = rk4_II(corda, dt, t_max, W, spring.get_k(), m, corda.l);
-        
+    float t = 0;
     while (window.isOpen())
     {
         sf::Event event;
@@ -42,11 +41,14 @@ int main(){
  
  
         window.clear(sf::Color::Black);
-        
-        for (int j = 0; j < evolution_of_chains.size() - 1; j++){
-            for (int i = 0; i < evolution_of_chains[j].size() - 1; i++){
-                (evolution_of_chains[j])[i].draw(window);    
+         while(t <= t_max){
+            Chain CH = rk4_II(corda, dt, t_max, W, spring.get_k(), m, corda.l, t);
+            for (int i = 0; i < n_PM; i++)
+            {
+              CH[i].draw(window);
             }
+            
+            t += dt;
         }                     
           
         window.display();
