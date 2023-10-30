@@ -15,7 +15,7 @@ int main() {
   window.setVerticalSyncEnabled(false);
   window.setFramerateLimit(60);
 
-    auto n{t_max / dt};  // numero di punti(vertici)
+  auto n{t_max / dt};  // numero di punti(vertici)
   particle p1{};
   sf::VertexArray graph_of_pos(sf::LineStrip, n);
   sf::VertexArray graph_of_vel(sf::LineStrip, n);
