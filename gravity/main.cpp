@@ -13,8 +13,8 @@ int main(){
 
     float W{1000}; //velocità angolare
 
-     float dt{.05};
-     float t_max{1.};
+     float dt{1.};
+     float t_max{5.};
     
     unsigned const display_width = .7 * sf::VideoMode::getDesktopMode().width;
     unsigned const display_height = .7 * sf::VideoMode::getDesktopMode().height;

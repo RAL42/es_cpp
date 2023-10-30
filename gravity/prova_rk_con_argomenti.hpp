@@ -58,12 +58,11 @@ std::vector<Chain> rk4_II(Chain ch, float dt, float t_max, float W, float k, flo
   float y_{};
 
   std::vector<Chain> evolution_of_chains;  // salvo tutti l'evoluzione della catena per ogni dt, la metto qui perche poi devo farne il return
-  
+std::cout<<"size of ch = " <<ch.size() << '\n';  
   float i{t0};            // istante di tempo
   while (i <= t_max) {  // per ogni dt faccio evolvere ogni punto della catena
-    for (int j = 0; j < ch.size(); j++) {
+    for (int j = 0; j <= ch.size(); j++) {
       std::cout<<" \n ---------------- \n inizio j = " << j << " ; i = " << i << '\n'; 
-      std::cout<< "size chain " << ch.size() <<"\n";
 
 // evoluzione delle x
       
@@ -71,7 +70,7 @@ std::vector<Chain> rk4_II(Chain ch, float dt, float t_max, float W, float k, flo
       float y{};
       float cosTheta{};
 
-      if (j = 0) {  // poichè un vector ha un inizio e una fine, non è una corda
+      if (j == 0) {  // poichè un vector ha un inizio e una fine, non è una corda
         x = ch[1].get_x() - ch.back().get_x();
         y = ch[1].get_y() - ch.back().get_y();
        
@@ -81,18 +80,25 @@ std::vector<Chain> rk4_II(Chain ch, float dt, float t_max, float W, float k, flo
 
       std::cout<< " interm0 j = " << j << " ; i = " << i << '\n'; 
 
-      } else if (j = ch.size()) {
+      } else if (j == ch.size()) {
         x = (*(ch.end() - 2)).get_x() - ch[0].get_x();
         y = (*(ch.end() - 2)).get_y() - ch[0].get_y();
-       
+       std::cout<< " interm0.01 j = " << j << " ; i = " << i << '\n'; 
+
         float Dx{(*(ch.end()-1)).get_x() - (*(ch.end()-2)).get_x()};  //Delta x dell'ultimo e penultimo elemento della catena
         float Dy{(ch[1].get_y() - ch[0].get_y())}; //Delta y 
         cosTheta = abs(Dx) / sqrt(Dx*Dx+Dy*Dy);
         
       std::cout<< " interm0.1 j = " << j << " ; i = " << i << '\n'; 
 
-      } else {
+      } /*else if(j == 4){
+      std::cout<< " interm j=4 j = " << j << " ; i = " << i << '\n'; 
+
+      }*/ else{
+        std::cout<< " interm j=4 j = " << j << " ; i = " << i << '\n'; 
         x = ch[j + 1].get_x() - ch[j - 1].get_x();
+        std::cout<< " interm j=4 II j = " << j << " ; i = " << i << '\n'; 
+
         y = ch[j + 1].get_y() - ch[j - 1].get_y();
 
         auto Dx{abs( ch[j].get_x()- ch[j+1].get_x())};
