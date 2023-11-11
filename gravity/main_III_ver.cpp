@@ -17,13 +17,14 @@ std::string to_string_with_precision(const float a_value, const int n = 2){// ht
 int main() {
   int n_PM{20};
   float m{10};
-  Chain corda{n_PM, m};
+  std::vector<PM> corda;
 
   Hooke spring(1, 2*pi/n_PM);  
   float W{1};  // velocità angolare
   
   //INIZIO DISPONENDO LA CORDA A FORMA DI CERCHIO
-  corda.initial_config(spring.get_l());
+  corda = initial_config(corda, n_PM, spring.get_l(), m);
+  std::cout<< "capienza = " << corda.size() << '\n';
 
   //sf::Time dt_ = sf::seconds(.1);
   //float dt{dt_.asSeconds()};
@@ -64,7 +65,7 @@ int main() {
 
 
  sf::Font font;
-    font.loadFromFile("./font/grasping.ttf");
+    font.loadFromFile("./font/fresco_stamp.ttf");
     sf::Text stringa;
     stringa.setFont(font);
    // stringa.setString("caccamerda");
@@ -94,7 +95,7 @@ int main() {
 
       //if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) window.close();
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {start = true;};
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+     /* if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
         n_PM += 1;
         std::cout<< "n_PM = " << n_PM << '\n';
         corda = Chain(n_PM, m);
@@ -106,20 +107,21 @@ int main() {
         //corda.resize(n_PM);
         corda = Chain(n_PM, m);
         //corda.initial_config(spring.get_l());
-      };
+      };*/
     }
 
     // window.draw(x_axis, 2, sf::Lines);
     // window.draw(y_axis, 2, sf::Lines);
     if (start) {
         while (t <= t_max) {
-        Chain CH = rk4_II(corda, dt, t_max, W, spring.get_k(), m, spring.get_l(), t);  // creo la corda evoluta al tempo t
+        std::vector<PM> CH = rk4_II(corda, dt, t_max, W, spring.get_k(), m, spring.get_l(), t);  // creo la corda evoluta al tempo t
         std::cout << "------------ \n catena all'istante " << t << '\n';
+
         window.clear(sf::Color::Black);
         for (int i = 0; i < n_PM; i++) {  // disegno ogni punto della corda appena calcolata
           CH[i].draw(window);
 
-          std::cout << "CH[i].x = " << CH[i].get_x() << "; CH[i].y = " << CH[i].get_y() << '\n'; 
+          //std::cout << "CH[i].x = " << CH[i].get_x() << "; CH[i].y = " << CH[i].get_y() << '\n'; 
         }
 
         stringa.setString(to_string_with_precision(t));
@@ -127,7 +129,7 @@ int main() {
         window.display();
         t += dt;
         };
-      start = false;
+
 
       
 /* sf::Time last_time1{};

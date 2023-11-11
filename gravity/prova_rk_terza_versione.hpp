@@ -44,14 +44,15 @@ float f_y(float t, float y, float dxdt, float k, float m, float l, float cosThet
 }
 //---------------------------------------------------------------------------------------------
 
-Chain rk4_II(Chain ch, float dt, float t_max, float W, float k, float m, float l, float i) {  // i è il tempo, glielo do nel main nel ciclo while
+std::vector<PM> rk4_II(std::vector<PM> ch, float dt, float t_max, float W, float k, float m, float l, float i) {  // i è il tempo, glielo do nel main nel ciclo while
   dxdt.push_back(dxdt0);
   float x_{};
   float y_{};
-  Chain temp_ch(0, m);  
+  std::vector<PM> temp_ch=ch;  
+  std::cout<< "capienza dal rk = " << ch.size() << " e " << temp_ch.size() << '\n';
 
-  for (int j = 0; j < ch.size(); j++){
-  //std::cout << " \n ---------------- \n inizio j = " << j << " ; i = " << i << '\n';
+ for (int j = 0; j < ch.size(); j++){
+  std::cout << " \n ---------------- \n inizio j = " << j << " ; i = " << i << '\n';
 
 // evoluzione delle x
 
@@ -126,13 +127,11 @@ Chain rk4_II(Chain ch, float dt, float t_max, float W, float k, float m, float l
   //temp_ch[j]=temp_pm;
 
     
-  /*std::cout<< "size of temp ch = " << temp_ch.size() << '\n';
-    std::cout << "temp_pm x = " << temp_pm.get_x() << "\n";
-    std::cout << "temp_pm y = " << temp_pm.get_y() << "\n";
-    std::cout << "temp_ch.x = " << ch[j].get_x() << "\n"; 
-    std::cout << "temp_ch.y = " << ch[j].get_y() << "\n";
+  //std::cout<< "size of temp ch = " << temp_ch.size() << '\n';
+    std::cout << "temp_pm = (" << temp_pm.get_x() << "," << temp_pm.get_y() << ") \n"; 
+    std::cout << "CH[i] = (" << ch[i].get_x() << ", " << ch[i].get_y() << ") \n"; 
     std::cout << " fine j = " << j << " ; i = " << i << '\n';
-    */
+    
 };
   return temp_ch;
 }

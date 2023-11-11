@@ -8,22 +8,40 @@
 
 const float pi = M_PI; //usa l'alias
 
-struct PM { // Punto Materiale
-  sf::Vector2f pos;
-  float m;  // massa
-};
 
-void equals (PM pm1, PM pm2){
-    pm1.pos.x = pm2.pos.x;
-    pm1.pos.y=pm2.pos.y; 
+class PM { // Punto Materiale
+  sf::Vector2f pos;
+  //sf::Vector2f vel;
+  float m;  // massa
+
+
+ public:
+  PM(float p_x, float p_y,float m_): pos(p_x, p_y), m(m_) {  // constructor
+}
+  float get_x(){
+    return pos.x;
+  };
+  float get_y(){
+    return pos.y;
+  }
+
+void operator= (PM pm1) {
+  pos.x = pm1.get_x();
+  pos.y = pm1.get_y();
 }
 
-/*void update_x(float x_){
+void update_x(float x_){
   pos.x = x_;
 }
 void update_y(float y_){
   pos.y = y_;
-}*/
+}
+
+void operator() (PM pm1) {
+   pos.x=pm1.get_x();
+   pos.y= pm1.get_y();
+}
+};
 
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -128,11 +146,10 @@ class Chain {
   
   void initial_config(float l){ //costruisce la catena nella configurazione iniziale
       for (int i = 0; i < NoPM; i++) {  // con questo ciclo for genero la configurazione iniziale della catena, assegnando la posizioni iniziali utilizzando funzioni di i
-      sf::Vector2f w(200*cos(l*i), 200*sin(l*i));
-      PM pm_temp{w, m};  // l'argomento di cos e sin sono in modo tale che i punti, inizialmente, vengano disposti su una circonferenza
+      PM pm_temp{static_cast<float>(200*cos(l*i)/l), static_cast<float>(200*sin(l*i)/l), m};  // l'argomento di cos e sin sono in modo tale che i punti, inizialmente, vengano disposti su una circonferenza
       ch.push_back(pm_temp);
 
-      std::cout<< "("<< pm_temp.pos.x << ", " << pm_temp.pos.y << ")" << '\n';
+      std::cout<< "("<< pm_temp.get_x() << ", " << pm_temp.get_y() << ")" << '\n';
     };
     std::cout<<"size of chain initially = " << ch.size() << '\n'; 
   }
@@ -176,14 +193,22 @@ class Chain {
 };
 
 int main(){
-  sf::Vector2f v(12.3, 553.2);
-    PM pm {v,1};
-    Chain ch(3, 1);
 
-    std::cout<< "pm = (" << pm.pos.x << ", " << pm.pos.y << ") \n";
-    equals(ch[1], pm);
-    std::cout<< "DOPO \nch[1] = (" << ch[1].pos.x << ", " << ch[1].pos.y << ") \n";
-    
+    PM pm {12.3, 553.2 ,1};
+    Chain ch(3, 1);
+    ch.initial_config(2*pi/3);
+    PM pm1=ch[1];
+
+    std::cout<< "PRIMA \n";
+    std::cout<< "pm = (" << pm.get_x() << ", " << pm.get_y() << ") \n";
+    std::cout<< "pm1 = (" << pm1.get_x() << ", " << pm1.get_y() << ") \n";
+    pm1 = pm;
+    ch[1](pm);
+    std::cout<< "DOPO \nch[1] = (" << ch[1].get_x() << ", " << ch[1].get_y() << ") \n";
+    std::cout<< "pm1 = (" << pm1.get_x() << ", " << pm1.get_y() << ") \n";
+
+    ch[1](pm1);
+    std::cout<< "DOPO \nch[1] = (" << ch[1].get_x() << ", " << ch[1].get_y() << ") \n";
 /*
     float a = 9328.;
     std::vector<float> v{21.,11.2, 321.54};
