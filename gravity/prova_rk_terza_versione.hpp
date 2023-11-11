@@ -23,8 +23,7 @@ float g_x(float t, float x, float dxdt) {
 }
 
 // float y_x;
-float f_x(float t, float x, float dxdt, float w, float k, float m, float l,
-          float cosTheta) {
+float f_x(float t, float x, float dxdt, float w, float k, float m, float l, float cosTheta) {
   auto M = 1 / m;
   float y_x = w * w * x - k * (x - 2 * l * cosTheta) * M;
   return y_x;
@@ -38,8 +37,7 @@ float g_y(float t, float y, float dxdt) {
 }
 
 // float y_y;
-float f_y(float t, float y, float dxdt, float k, float m, float l,
-          float cosTheta) {
+float f_y(float t, float y, float dxdt, float k, float m, float l, float cosTheta) {
   auto M = 1 / m;
   float y_y = -k * (y - 2 * l * cosTheta) * M;
   return y_y;
@@ -50,10 +48,10 @@ Chain rk4_II(Chain ch, float dt, float t_max, float W, float k, float m, float l
   dxdt.push_back(dxdt0);
   float x_{};
   float y_{};
-  for (int j = 0; j < ch.size(); j++){
+  Chain temp_ch(0, m);  
 
-  
-  std::cout << " \n ---------------- \n inizio j = " << j << " ; i = " << i << '\n';
+  for (int j = 0; j < ch.size(); j++){
+  //std::cout << " \n ---------------- \n inizio j = " << j << " ; i = " << i << '\n';
 
 // evoluzione delle x
 
@@ -104,8 +102,8 @@ Chain rk4_II(Chain ch, float dt, float t_max, float W, float k, float m, float l
     float k4_x = dt * g_x(i + dt, x + k3_x, dxdt[i] + l3_x);
     float l4_x = dt * f_x(i + dt, x + k3_x, dxdt[i] + l3_x, W, k, m, l, cosTheta);
 
-    x_ = x + (k1_x + 2 * k2_x + 2 * k3_x + k4_x) /6;  // ho calcolato la nuova posizione
-    ch[j].update_x(x_);
+    x_ = x + (k1_x + 2 * k2_x + 2 * k3_x + k4_x) /6;  // ho calcolato la nuova posizione  
+    //ch[j].update_x(x_);
 
 // evoluzione delle y
 
@@ -122,15 +120,19 @@ Chain rk4_II(Chain ch, float dt, float t_max, float W, float k, float m, float l
     float l4_y = dt * f_y(i + dt, y + k3_y, dxdt[i] + l3_y, k, m, l, cosTheta);
 
     y_ = y + (k1_y + 2 * k2_y + 2 * k3_y + k4_y) / 6;  // ho calcolato la nuova posizione
-/*
-    std::cout << "j = " << j << "\n";
-    std::cout << "i = " << i << "\n";
-*/    std::cout << "x_ = " << x_ << "\n";
-    std::cout << "y_ = " << y_ << "\n";
 
-    ch[j].update_y(y_);
+  PM temp_pm(x_, y_, m);
+  temp_ch.push_back(temp_pm);
+  //temp_ch[j]=temp_pm;
 
+    
+  /*std::cout<< "size of temp ch = " << temp_ch.size() << '\n';
+    std::cout << "temp_pm x = " << temp_pm.get_x() << "\n";
+    std::cout << "temp_pm y = " << temp_pm.get_y() << "\n";
+    std::cout << "temp_ch.x = " << ch[j].get_x() << "\n"; 
+    std::cout << "temp_ch.y = " << ch[j].get_y() << "\n";
     std::cout << " fine j = " << j << " ; i = " << i << '\n';
+    */
 };
-  return ch;
+  return temp_ch;
 }

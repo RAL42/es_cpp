@@ -1,9 +1,14 @@
 #pragma once
+
+#define _USE_MATH_DEFINES
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
 #include<cmath>
 #include<SFML/Graphics.hpp>
+
+const float pi = M_PI; //usa l'alias
 
 class PM { // Punto Materiale
   sf::Vector2f pos;
@@ -13,16 +18,9 @@ class PM { // Punto Materiale
   sf::CircleShape s;
 
  public:
-  PM(float p_x, float p_y,float m_) {  // constructor
-    pos.x = p_x;
-    pos.y = p_y;
+  PM(float p_x, float p_y,float m_): pos(p_x, p_y), m(m_) {  // constructor
 
-    //vel.x = v_x;
-    //vel.y = v_y;
-
-    m = m_;
-
-    s.setRadius(5);
+    s.setRadius(2.5);
     s.setPosition(pos);
     s.setFillColor(sf::Color::White);
   }
@@ -37,10 +35,10 @@ class PM { // Punto Materiale
     return pos.y;
   }
 
-void operator= (PM pm1) {
+/*void operator= (PM pm1) {
   pos.x = pm1.get_x();
   pos.y = pm1.get_y();
-}
+}*/
 
 void update_x(float x_){
   pos.x = x_;
@@ -55,18 +53,19 @@ void update_y(float y_){
 
 class Hooke {
   float k;
- // float l;  // lunghezza a riposo, deve essere la stessa di quella nella classe chain, quindi la tolgo, è inutile
+  float l;  // lunghezza a riposo, deve essere la stessa di quella nella classe chain, quindi la tolgo, è inutile
 
  public:
-  Hooke(float k_): k(k_) {
-    if (k <= 0.) {
-      throw std::runtime_error{"La costante elastica deve essere > 0"};
+  Hooke(float k_, float l_): k(k_), l(l_) {
+    if (k <= 0. || l < 0) {
+      throw std::runtime_error{"La costante elastica deve essere > 0, oppure la lunghezza a riposo >= 0"};
     };
   };
 
-  float get_k(){
-    return k;
-  };
+  void update_k(float k_){k = k_;};
+  void update_l(float l_){l = l_;};
+  float get_k(){return k;};
+  float get_l(){return l;};
   
   //float operator() (PM pm1_, PM pm2_) ;
 };
@@ -75,35 +74,37 @@ class Hooke {
 
 class Chain {
   std::vector<PM> ch;  // catena inestensibile come insieme discreto di PM a distanza fissa;
- 
+  float m;
+  int NoPM; //sta per Number of PM
+  
  public:
- const float pi=3.1415926;//53589793
- 
- float l{}; //IMPORTANTE!!  è LA lunghezza a riposo, la uso nel main quando la do in pasto al rk4_II()
 
-  Chain(const int number_of_PM, const float mass) { //costruisce la catena nella configurazione iniziale
-    l=2*pi/number_of_PM; //lunghezza dell'arco tra un PM e il successivo, OSSIA LA LUNGHEZA A RIPOSO
-      for (int i = 0; i < number_of_PM; i++) {  // con questo ciclo for genero la configurazione iniziale della catena, assegnando la posizioni iniziali utilizzando funzioni di i
-      PM pm_temp(200*cos(l*i), 200*sin(l*i), mass);  // l'argomento di cos e sin sono in modo tale che i punti, inizialmente, vengano disposti su una circonferenza
+  Chain(const int number_of_PM, const float mass): NoPM(number_of_PM), m(mass) {
+    /*if(number_of_PM <= 0){
+      std::cout<< "number_of_PM = " << number_of_PM << '\n';
+      throw std::runtime_error{"numero di PM deve essere > 0"};
+    }*/
+  };
+  
+  void initial_config(float l){ //costruisce la catena nella configurazione iniziale
+      for (int i = 0; i < NoPM; i++) {  // con questo ciclo for genero la configurazione iniziale della catena, assegnando la posizioni iniziali utilizzando funzioni di i
+      PM pm_temp(100 *cos(l*i) /l, 100*sin(l*i) / l, m);  // l'argomento di cos e sin sono in modo tale che i punti, inizialmente, vengano disposti su una circonferenza
       ch.push_back(pm_temp);
 
       std::cout<< "("<< pm_temp.get_x() << ", " << pm_temp.get_y() << ")" << '\n';
     };
-  };
+    std::cout<<"size of chain initially = " << ch.size() << '\n'; 
+  }
 
-  void push_back(PM pm){
-    ch.push_back(pm);
-  };
 
-int size(){
-  return ch.size();
-}
 
-PM operator[] (const int i){
-  return ch[i];
-}
+ void push_back(PM pm){ch.push_back(pm);};
 
-void operator= (Chain evolved_ch){
+ int size(){return ch.size();}
+
+ PM operator[] ( int i){return ch[i];}
+
+ void operator= (Chain evolved_ch){
   if (ch.size() <= evolved_ch.size()){
     for (int i = 0; i < ch.size(); i++){ //quelli che ci sono gia li aggiorna
       ch[i]=evolved_ch[i];
@@ -121,14 +122,13 @@ void operator= (Chain evolved_ch){
   }
 }
 
-PM back(){
-  return ch.back();
-}
+ PM back(){return ch.back();}
 
-auto end(){  //restituisce un iterator che punta all'(ultimo +1) elemento del vector [quindi *(vector.end() -1) da  l'ultimo elemento]
-  return ch.end(); //quindi va dereferenziato
-}
+ auto end(){return ch.end();}; //restituisce un iterator che punta all'(ultimo +1) elemento del vector [quindi *(vector.end() -1) da  l'ultimo elemento] quindi va dereferenziato
 
+ void empty(){ch.empty();}
+
+//void resize(int n){ch.resize(n);};
 /*void evolve(){
   std::vector<Chain> evolution_of_chains = rk4_II(ch, 0.1, 10);
 }*/
