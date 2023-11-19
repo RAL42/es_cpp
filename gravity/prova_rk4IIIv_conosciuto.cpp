@@ -1,6 +1,6 @@
-#pragma once
 #include <iostream>
 #include <vector>
+#include <sstream>
 
 #include "lib_obj.hpp"  //per la catena
 /* ormai inutili, li tengo per i commenti
@@ -25,7 +25,7 @@ float g_x(float t, float x, float dxdt) {
 // float y_x;
 float f_x(float t, float x, float dxdt, float w, float k, float m, float l, float cosTheta) {
   auto M = 1 / m;
-  float y_x = w * w * x - k * (x - 2 * l * cosTheta) * M;
+  float y_x = x;
   return y_x;
 }
 //---------------------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ float g_y(float t, float y, float dxdt) {
 // float y_y;
 float f_y(float t, float y, float dxdt, float k, float m, float l, float cosTheta) {
   auto M = 1 / m;
-  float y_y = -k * (y - 2 * l * cosTheta) * M;
+  float y_y = y;
   return y_y;
 }
 //---------------------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ std::vector<PM> rk4_II(std::vector<PM> ch, float dt, float t_max, float W, float
   dxdt.push_back(dxdt0);
   float x_{};
   float y_{};
-  std::vector<PM> temp_ch=ch;  
+  std::vector<PM> temp_ch = ch;  
   std::cout<< "capienza dal rk = " << ch.size() << " e " << temp_ch.size() << '\n';
 
  for (int j = 0; j < ch.size(); j++){
@@ -123,9 +123,9 @@ std::vector<PM> rk4_II(std::vector<PM> ch, float dt, float t_max, float W, float
     y_ = y + (k1_y + 2 * k2_y + 2 * k3_y + k4_y) / 6;  // ho calcolato la nuova posizione
 
   PM temp_pm(x_, y_, m);
-  temp_ch.push_back(temp_pm);
-  //temp_ch[j]=temp_pm;
-
+  //temp_ch.push_back(temp_pm);
+  temp_ch[j]=temp_pm;
+  
     
   //std::cout<< "size of temp ch = " << temp_ch.size() << '\n';
     std::cout << "temp_pm = (" << temp_pm.get_x() << "," << temp_pm.get_y() << ") \n"; 
@@ -134,4 +134,85 @@ std::vector<PM> rk4_II(std::vector<PM> ch, float dt, float t_max, float W, float
     
 };
   return temp_ch;
+}
+
+std::string to_string_with_precision(const float a_value, const int n = 2){// https://stackoverflow.com/questions/16605967/set-precision-of-stdto-string-when-converting-floating-point-values
+    std::ostringstream out;
+    out.precision(n);
+    out << std::fixed << a_value;
+    return std::move(out).str();
+}
+
+int main(){
+  PM pm(0,10,1);
+  std::vector<PM> corda{pm};
+  
+  float dt{0.01};
+  float t_max{1};
+
+  unsigned const display_width = .7 * sf::VideoMode::getDesktopMode().width;
+  unsigned const display_height = .7 * sf::VideoMode::getDesktopMode().height;
+  sf::RenderWindow window(sf::VideoMode(display_width, display_height), "CHAIN EVOLUTION");
+  window.setPosition(sf::Vector2i(100, 100));
+
+  sf::Vector2f window_size(window.getSize());  // getsize prende width e height della window
+  sf::View view{sf::Vector2f{0, 0}, window_size};  // view permette di cambiare l'origine, il primo vettore è l'origine, il secondo e la size della window
+  window.setView(view);
+
+  // sf::Vertex x_axis[] = {sf::Vertex(sf::Vector2f(-window_size.x, 0)),
+  // sf::Vertex(sf::Vector2f(window_size.x, 0))}; sf::Vertex y_axis[] =
+  // {sf::Vertex(sf::Vector2f(0, -window_size.y/2)), sf::Vertex(sf::Vector2f(0,
+  // window_size.y/2))};
+
+  float t {};
+  bool start = false;
+
+  while (window.isOpen()) {
+
+ sf::Font font;
+    font.loadFromFile("./font/fresco_stamp.ttf");
+    sf::Text stringa;
+    stringa.setFont(font);
+    stringa.setCharacterSize(40);
+    stringa.setFillColor(sf::Color::White);
+    stringa.setPosition(300, -300);
+
+
+
+    sf::Event event;
+    
+    while (window.pollEvent(event))
+    {
+        switch (event.type)
+        {
+        case sf::Event::Closed:
+            window.close();
+            break;
+        }
+
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {start = true;};
+     
+    }
+
+    
+    if (start) {
+        while (t <= t_max) {
+        std::vector<PM> CH = rk4_II(corda, dt, t_max, 100, 10, 1, 10, t);  // creo la corda evoluta al tempo t
+        std::cout << "------------ \n catena all'istante " << t << '\n';
+
+        window.clear(sf::Color::Black);
+        for (int i = 0; i < CH.size(); i++) {  // disegno ogni punto della corda appena calcolata
+          CH[i].draw(window);
+
+          std::cout << "FUORI CH[i] = (" << CH[i].get_x() << ", " << CH[i].get_y() << ") " << '\n'; 
+        }
+
+        stringa.setString(to_string_with_precision(t));
+        window.draw(stringa);
+        window.display();
+        t += dt;
+        
+      };
+    }
+  }
 }

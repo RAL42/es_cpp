@@ -24,6 +24,8 @@ class PM { // Punto Materiale
     s.setPosition(pos);
     s.setFillColor(sf::Color::White);
   }
+  PM() = default;
+
   void draw(sf::RenderWindow& wind){
     s.setPosition(pos);
     wind.draw(s);
@@ -61,6 +63,7 @@ class Hooke {
       throw std::runtime_error{"La costante elastica deve essere > 0, oppure la lunghezza a riposo >= 0"};
     };
   };
+  Hooke() = default;
 
   void update_k(float k_){k = k_;};
   void update_l(float l_){l = l_;};
@@ -71,7 +74,7 @@ class Hooke {
 };
 
 //-------------------------------------------------------------------------------------------------------------------
-/*
+
 class Chain {
   std::vector<PM> ch;  // catena inestensibile come insieme discreto di PM a distanza fissa;
   float m;
@@ -79,28 +82,25 @@ class Chain {
   
  public:
 
-  Chain(const int number_of_PM, const float mass): NoPM(number_of_PM), m(mass) {
-    /*if(number_of_PM <= 0){
-      std::cout<< "number_of_PM = " << number_of_PM << '\n';
-      throw std::runtime_error{"numero di PM deve essere > 0"};
-    }
-  };
-  */
-
-  std::vector<PM> initial_config(std::vector<PM> chain, int NoPM, float l, float m){ //costruisce la catena nella configurazione iniziale
-      std::vector<PM> temp_ch = chain;
+  Chain(const int number_of_PM, const float mass): NoPM(number_of_PM), m(mass) {};
+  Chain() = default;
+  
+  void initial_config(float l){ //costruisce la catena nella configurazione iniziale
       for (int i = 0; i < NoPM; i++) {  // con questo ciclo for genero la configurazione iniziale della catena, assegnando la posizioni iniziali utilizzando funzioni di i
       PM pm_temp(100 *cos(l*i) /l, 100*sin(l*i) / l, m);  // l'argomento di cos e sin sono in modo tale che i punti, inizialmente, vengano disposti su una circonferenza
-      chain.push_back(pm_temp);
+      ch.push_back(pm_temp);
 
       std::cout<< "("<< pm_temp.get_x() << ", " << pm_temp.get_y() << ")" << '\n';
     };
-    std::cout<<"size of chain initially = " << chain.size() << '\n'; 
-   return temp_ch;
+    std::cout<<"size of chain initially = " << ch.size() << '\n'; 
+  }
+
+  std::vector<PM> state() {
+    return ch;
   }
 
 
-/*
+
  void push_back(PM pm){ch.push_back(pm);};
 
  int size(){return ch.size();}
@@ -134,8 +134,7 @@ class Chain {
 //void resize(int n){ch.resize(n);};
 /*void evolve(){
   std::vector<Chain> evolution_of_chains = rk4_II(ch, 0.1, 10);
-}
-
-};*/
+}*/
+};
 
 //float W; //velocità angolare

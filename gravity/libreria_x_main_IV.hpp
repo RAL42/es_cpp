@@ -17,15 +17,15 @@ class PM {  // Punto Materiale
   sf::Vector2f vel;
   float m;  // massa
 
-  // sf::CircleShape s;
+   sf::CircleShape s;
 
  public:
   PM(float p_x, float p_y, float v_x, float v_y, float m_)
       : pos{p_x, p_y}, vel{v_x, v_y}, m(m_) {  // constructor
 
-    /*s.setRadius(2.5);
+    s.setRadius(2.5);
     s.setPosition(pos);
-    s.setFillColor(sf::Color::White);*/
+    s.setFillColor(sf::Color::White);
   }
 
   float get_x() { return pos.x; };
@@ -33,9 +33,9 @@ class PM {  // Punto Materiale
   float get_m() { return m; };
 
   sf::Vector2f operator-(PM pm1) {  // sottrazione tra due PM dà un sf::Vector2f
-    sf::Vector2f temp_vec(pos.x - pm1.get_x(), pos.y - pm1.get_y());
-    return temp_vec;
+    return sf::Vector2f(pos.x - pm1.get_x(), pos.y - pm1.get_y());
   }
+
   float operator*(sf::Vector2f v) {  // prodotto scalare tra PM e sf::Vector
     return pos.x * v.x + pos.y * v.y;
   }
@@ -49,17 +49,7 @@ class PM {  // Punto Materiale
 
   void update_pos(sf::Vector2f p){ pos = p; };
   void update_vel(sf::Vector2f v){ vel = v; };
-  /*
-    void operator=(PM pm1) {
-      pos.x = pm1.get_x();
-      pos.y = pm1.get_y();
-    }
-
-   void update_x(float x_) { pos.x = x_; }
-    void update_y(float y_) { pos.y = y_; }
-    void update_vx(float vx_) { vel.x = vx_; }
-    void update_vy(float vy_) { vel.y = vy_; }
-  */
+  
 };
 
 //---------------------------------------------------------------
