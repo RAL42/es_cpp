@@ -5,31 +5,37 @@ float vec::get_y() const {return v.y;};
 sf::Vector2f vec::state() const {return v;};
 
 float vec::norm() const { return sqrt(v.x * v.x + v.y * v.y); }
-
+/*
 vec& vec::operator+=(vec const& other) {
   v.x += other.v.x;
   v.y += other.v.y;
   return *this;
 }
-
+*/  
 vec& vec::operator-=(vec const& other) {
   v.x -= other.v.x;
   v.y -= other.v.y;
   return *this;
 }
 
-vec& vec::operator*=(double scalar) {
+vec& vec::operator*=(float const& scalar) {
   v.x *= scalar;
   v.y *= scalar;
   return *this;
 }
 
-vec& vec::operator/=(double scalar) {
+vec& vec::operator/=(float const& scalar) {
   if (scalar == 0.) {
     throw std::runtime_error{"Cannot divide by zero."};
   }
   v.x /= scalar;
   v.y /= scalar;
+  return *this;
+}
+
+vec& vec::operator=(const vec& other) {
+  v.x = other.v.x;
+  v.y = other.v.y; 
   return *this;
 }
 
@@ -46,19 +52,19 @@ vec operator-(vec const& a, vec const& b) {
   return vec{a.get_x() - b.get_x(), a.get_y() - b.get_y()};
 }
 
-vec operator*(vec const& a, double b) {
+vec operator*(vec const& a, float const& b) {
   return vec{b * a.get_x(), b * a.get_y()};
 }
 
-vec operator/(vec const& a, double b) {
+vec operator*(float const& b, vec const& a) {
+  return vec{b * a.get_x(), b * a.get_y()};
+}
+
+vec operator/(vec const& a, float const& b) {
   if (b == 0.) {
     throw std::runtime_error{"Cannot divide by zero."};
   }
   return vec{a.get_x() / b, a.get_y() / b};
-}
-
-vec operator*(double b, vec const& a) {
-  return vec{b * a.get_x(), b * a.get_y()};
 }
 
 bool operator==(vec const& a, vec const& b) {

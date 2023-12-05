@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SPAZIO_VETT
+#define SPAZIO_VETT
+
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
@@ -17,23 +19,24 @@ public:
     float norm() const;
   
   template <typename T>
-  void update_pos(T p){ pos = p; };
+ // void update_pos(T p){ pos = p; };
 
   vec& operator+=(vec const&);
   vec& operator-=(vec const&);
-  vec& operator*=(double);
-  vec& operator/=(double);
+  vec& operator*=(float const&);
+  vec& operator/=(float const&);
+  vec& operator=(vec const&);
 };
 
 std::ostream& operator<<(std::ostream&, vec const&);
 vec operator+(vec const&, vec const&);
 vec operator-(vec const&, vec const&);
-vec operator*(vec const&, double);
-vec operator/(vec const&, double);
-vec operator*(double, vec const&);
+vec operator*(vec const&, float const&);
+vec operator*(float const& , vec const&);
+vec operator/(vec const&, float const&);
 bool operator==(vec const&, vec const&);
 
-
+#endif 
 
 
 

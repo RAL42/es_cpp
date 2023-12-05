@@ -8,6 +8,15 @@
 
 #include "Spazio_vett.hpp"
 
+/*
+classe Hooke: è "formata" da due float e un vec. Nel constructor gli do solo i due float, . Nell' apply_hooke però c'è una lunghezza a riposo di tipo vecc. 
+Quella la calcolo una volta che genero la posizione iniziale, che sarebbe quella di riposo
+e sarà diversa per ogni coppia di punti 
+
+class Chain: è "formata" da un Hooke e un vector<PM>. Nel costruttore gli do solo la Hooke e i PM glieli 
+pusho dentro dopo
+*/
+
 const float pi = M_PI;  // usa l'alias
 float w{};              // velocità angolare
 
@@ -24,39 +33,58 @@ class PM {  // Punto Materiale
   PM(float p_x, float p_y, float v_x, float v_y, float m_)
       : pos{p_x, p_y}, vel{v_x, v_y}, m(m_) {  // constructor
 
-    s.setRadius(2.5);
+    s.setRadius(5);
     s.setPosition(pos.get_x(), pos.get_y());
     s.setFillColor(sf::Color::White);
   }
 
   PM(vec x, vec y, float m_) : pos(x), vel(y), m(m_){};
 
-  float get_x() { return pos.get_x(); };
-  float get_y() { return pos.get_y(); };
-  float get_m() { return m; };
+  void draw(sf::RenderWindow& wind){
+    s.setPosition(sf::Vector2f(pos.get_x(), pos.get_y())); //poichè pos è un vec e c'è bisogno di un vector2f
+    wind.draw(s);
+  }
 
-  vec get_pos() { return pos; }
-  vec get_vel() { return vel; }
+  float get_x() const { return pos.get_x(); };
+  float get_y() const { return pos.get_y(); };
+  float get_m() const { return m; };
+
+  vec get_pos() const { return pos; }
+  vec get_vel() const { return vel; }
+  PM operator= (const PM& other_pm){
+    pos = other_pm.get_pos();
+    vel = other_pm.get_vel();
+    return *this;
+    }
 };
 
 //---------------------------------------------------------------
 
 class Hooke {
-  const float k;
-  const vec l;
+  const float k_;
+  const float l_;//lunghezza a riposo scalare
+  vec lv_; //lunghezza a riposo vettoriale. non posso mettrla const perchè dopo devo aggiornarla
 
  public:
-  Hooke(const float k_, const vec l_) : k(k_), l(l_){};
+  Hooke(const float k, const float l) : k_(k), l_(l){};
   Hooke() = default;
 
-  auto operator()(PM pm1, PM pm2) const { // calcola la forza (è un vettore)
-  return k * ((pm2.get_pos() - pm1.get_pos()) - l); 
+  float get_k() const { return k_; }
+  vec get_lv() const { return lv_; } //lv stsa per "l vettoriale"
+  float get_l() const {return l_;}
+  void update_lv(vec& lv) {lv_ = lv;}
+
+};
+
+//---------------------------------------------------------------
+
+auto apply_hooke(const PM& pm1, const PM& pm2, const Hooke& hooke) { // calcola la forza (è un vec)
+  return hooke.get_k() * ((pm2.get_pos() - pm1.get_pos()) - hooke.get_lv()); 
   }
 
-  float get_k() { return k; }
-  vec get_lv() { return l; } //lv stsa per "l vettoriale"
-  float get_l() {return l.norm();} 
-};
+auto apply_CF (const PM& pm1, const float& omega){ //deve essere un vecc perche dopo devo sommarlo per fare la F totale, in solve
+  return vec(omega*omega*pm1.get_x(), 0);     //ossia ritorna un vec con componente solo lungo x, controlla se è giusto, ma dovrebbe esserlo
+}
 
 //---------------------------------------------------------------
 
@@ -91,21 +119,39 @@ class Chain {
   }
 
  public:
-  Chain(Hooke const &hooke) : hooke_(hooke){};
+  Chain(Hooke const& hooke) : hooke_(hooke){};
 
   bool empty() { return ch_.empty(); };
   std::size_t size() const { return ch_.size(); };
   void push_back(PM const &pm) { ch_.push_back(pm); }
   std::vector<PM> const &state() const {return ch_;};
+ PM operator[] (int i) {return ch_[i];}
+
+  void initial_config(const float& ll ,const float& m ,const float& r ,const int& NoPM){ //costruisce la catena nella configurazione iniziale
+      auto l = ll/r; //angolo della lunghezza a riposo 
+      for (int i = 0; i < NoPM; i++) {  // con questo ciclo for genero la configurazione iniziale della catena, assegnando la posizioni iniziali utilizzando funzioni di i
+      PM pm_temp(r *cos(l*i), r * sin(l*i) , 0, 0, m);  // l'argomento di cos e sin sono in modo tale che i punti, inizialmente, vengano disposti su una circonferenza
+      ch_.push_back(pm_temp);
+
+      std::cout<< "("<< pm_temp.get_x() << ", " << pm_temp.get_y() << ")" << '\n';
+    };
+    std::cout<<"size of chain initially = " << ch_.size() << '\n'; 
+  }
 
   void evolve(double const dt) {
     auto state_it = ch_.begin();
     auto state_it_next = std::next(state_it);
     auto state_last = std::prev(ch_.end());
 
-    vec f_prev;
+    vec f_prev(apply_hooke(*state_it, *state_last, hooke_)); 
+    /*ossia f_prev è la forza di hooke esercitata dall'ultimo elemento della catena sul primo 
+    (ricordo che la catena è chiusa e il primo elemento è quello che giace sull'asse x, l'ultimo sarebbe quello appena sotto).
+    Questo poichè nel ciclo for sotto inizio a calcolare le forze a partire dal primo elemento, questo è soggetto alla 
+    forza data dall'elemento precedente (f_prev) e dall'elemento successivo, che calcolo dopo (f) (guarda il commento nella chain.hpp in /lab5) 
+    */
+
     for (; state_it != state_last; ++state_it, ++state_it_next) {
-      vec f = hooke_(*state_it, *state_it_next);
+      vec f = apply_hooke(*state_it, *state_it_next, hooke_) + apply_CF(*state_it, w);
       *state_it = solve(*state_it, f - f_prev, dt);
       f_prev = f;
     }
@@ -122,17 +168,9 @@ class Chain {
   float inverse_d1{1 / d(temp_pm, pmP1)};
   float inverse_d2{1 / d(temp_pm, pmM1)};
 
-  const sf::Vector2f F1 = molla.get_k() * (d(temp_pm, pmP1) - molla.get_l()) *
-                          (pmP1 - temp_pm) *
-                          inverse_d1;  // F dovuta alla massa successiva
-  const sf::Vector2f F2 = molla.get_k() * (d(temp_pm, pmM1) - molla.get_l()) *
-                          (pmM1 - temp_pm) *
-                          inverse_d2;  // F dovuta alla massa precedente
-  const sf::Vector2f F3 =
-      w * w *
-      sf::Vector2f(
-          pmj.get_x(),
-          0);  // moltiplicando per il vector dovrei dividere per il modulo, che
+  const sf::Vector2f F1 = molla.get_k() * (d(temp_pm, pmP1) - molla.get_l()) * (pmP1 - temp_pm) *inverse_d1;  // F dovuta alla massa successiva
+  const sf::Vector2f F2 = molla.get_k() * (d(temp_pm, pmM1) - molla.get_l()) *(pmM1 - temp_pm) * inverse_d2;  // F dovuta alla massa precedente
+  const sf::Vector2f F3 =w * w *sf::Vector2f(pmj.get_x(),0);  // moltiplicando per il vector dovrei dividere per il modulo, che
                // però sarebbe comparso a numeratore per via della formula
                // analtica Senza massa così evito di moltiplicare e dividere,
                // nella formula di a la metto fuori dalla parentesi

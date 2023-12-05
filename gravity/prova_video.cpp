@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+
 #include <vector>
 #include<math.h>
  
@@ -147,13 +148,12 @@ int main()
  
     for (int i = 0; i < num_particles; i++)
     {
-        particles.push_back(Particle(640 + rand()%10, 360 + rand()%10, 0, 0));
+        particles.push_back(Particle(640 , 360, 0, 0));
  
         //change colors
         float val = (float)i / (float)num_particles;
  
         sf::Color col = map_val_to_color(val);
- 
  
         particles[i].set_color(col);
  
