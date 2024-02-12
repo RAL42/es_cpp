@@ -30,7 +30,7 @@ int main() {
 
   auto const delta_t{sf::microseconds(10)};
   int const fps{60};
-  int const steps_per_evolution{500 / fps};
+  int const steps_per_evolution{5000 / fps};
 
   unsigned const display_width = .9 * sf::VideoMode::getDesktopMode().width;
   unsigned const display_height = .9 * sf::VideoMode::getDesktopMode().height;

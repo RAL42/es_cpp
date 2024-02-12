@@ -5,17 +5,19 @@ int main() {
   int a;
   int i;
   cin >> a;
-  int smallest=a;
+  int smallest = a;
 
-  if(cin.good()){
-  return 1;  
-  } 
+  /*
+    if(cin.good()){
+    return 0;
+    }
+  */
 
-  while(cin.good()) {
+  while (cin.good()) {
     cin >> i;
     if (i < a) {
       smallest = i;
     }
   };
-  cout<<"il piu piccolo e' "<< smallest << '\n';
+  cout << "il piu piccolo e' " << smallest << '\n';
 }
