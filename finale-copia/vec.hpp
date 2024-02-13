@@ -20,8 +20,8 @@ class vec {
   // overload degli operatori
   vec &operator+=(vec const &);
   vec &operator-=(vec const &);
-  vec &operator*=(double const &);
-  vec &operator/=(double const &);
+  vec &operator*=(double const);
+  vec &operator/=(double const);
   bool operator==(vec const &);
 
   double get_x() const;
@@ -30,9 +30,9 @@ class vec {
   // restituisce la componente y
   double norm() const;
   // calcola la norma del vettore
-  void update_x(double const &);
+  void update_x(double const);
   // aggiorna la componente x
-  void update_y(double const &);
+  void update_y(double const);
   // aggiorna la componente y
 };
 
@@ -40,8 +40,8 @@ class vec {
 std::ostream &operator<<(std::ostream &, vec const &);
 vec operator+(vec const &, vec const &);
 vec operator-(vec const &, vec const &);
-vec operator*(vec const &, double const &);
-vec operator*(double const &, vec const &);
-vec operator/(vec const &, double const &);
+vec operator*(vec const &, double const);
+vec operator*(double const, vec const &);
+vec operator/(vec const &, double const);
 
 #endif

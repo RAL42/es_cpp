@@ -42,9 +42,9 @@ class PM {  // Punto Materiale
   double get_m() const;
   // restituisce la massa del punto
 
-  void update_x(double const &);
+  void update_x(double const);
   // aggiorna la componente x
-  void update_y(double const &);
+  void update_y(double const);
   // aggiorna la componente y
 
   vec get_pos() const;

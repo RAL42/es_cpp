@@ -22,6 +22,26 @@ vec apply_CF(PM const& pm1, double const& omega) {
 
 // --------------------- CHAIN MEMBER CLASS ---------------------
 
+Chain::Chain(Hooke const& hooke, double const m, double const r, int const NoPM)
+    : hooke_(hooke) {
+  assert(m >= 0.);
+  assert(r >= 0.);
+  assert(NoPM > 0 && NoPM % 4 == 0);
+
+  for (int i = 0; i != NoPM; ++i) {
+    // con questo ciclo genero i dei punti della chain e li dispongo su una
+    // circoneferenza, assegnando la posizioni iniziali utilizzando funzioni di
+    // i
+
+    PM pm_temp(r * cos(2 * M_PI / NoPM * i), r * sin(2 * M_PI / NoPM * i), 0.,
+               0., m);
+    // l'argomento di cos e sin sono in modo tale che i punti vengano disposti
+    // su una circonferenza
+
+    ch_.push_back(pm_temp);
+  };
+}
+
 PM Chain::solve(PM pm, vec f, double const delta_t) const {
   auto const a = f / pm.get_m();
   auto const v = pm.get_vel() + a * delta_t;
@@ -53,7 +73,7 @@ void Chain::push_back(PM const& pm) { ch_.push_back(pm); }
 
 std::vector<PM> const& Chain::state() const { return ch_; };
 
-PM Chain::operator[](int const i) { return ch_[i]; }
+PM Chain::operator[](int i) { return ch_[i]; }
 
 void Chain::evolve(double const dt, double const w) {
   // Creo una copia della chain, cosicché quando calcolo l'evoluzione passo alle
@@ -99,8 +119,10 @@ void Chain::evolve(double const dt, double const w) {
       // aggiorna posizione e velocità del punto materiale date le forze appena
       // calcolate
 
-      //se
-      if(static_cast<size_t>(std::distance(ch_.begin(), state_it)) == ch_.size() / 4 || ch_.size() / 4 * 3) {
+      if (static_cast<long unsigned int>(
+              std::distance(ch_.begin(), state_it)) == ch_.size() / 4 ||
+          static_cast<long unsigned int>(
+              std::distance(ch_.begin(), state_it)) == ch_.size() / 4 * 3) {
         // ri-aggiorno la x del polo nord
         (*state_it).update_x(0.);
       };
@@ -145,10 +167,14 @@ void Chain::evolve(double const dt, double const w) {
 
       *state_it = solve(*state_it_copy, f + f_prev, dt);
 
-      if(static_cast<size_t>(std::distance(ch_.begin(), state_it)) == ch_.size() / 4 || ch_.size() / 4 * 3) {
+      if (static_cast<long unsigned int>(
+              std::distance(ch_.begin(), state_it)) == ch_.size() / 4 ||
+          static_cast<long unsigned int>(
+              std::distance(ch_.begin(), state_it)) == ch_.size() / 4 * 3) {
         // ri-aggiorno la x del polo nord
         (*state_it).update_x(0.);
       };
+
       f_prev = apply_hooke(*state_it_next_copy, *state_it_copy, hooke_) +
                apply_CF(*state_it_copy, w);
       // calcola la forza esercitata dall'elemento corrente sul successivo, per

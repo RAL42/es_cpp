@@ -9,7 +9,7 @@
 */
 
 auto evolve(Chain& chain, int steps_per_evolution, sf::Time delta_t,
-            double const& w) {
+            double const w) {
   // fa evolvere la chain ogni dt, i volte, fino a steps_per_evolution e
   // restituisce quest'ultima evoluzione, che poi andrà stampata a schermo
 
@@ -43,7 +43,9 @@ int main() {
   // chiedo in input i parametri principali
   std::cout << "Inserisci massa dei Punti Materiali \n";
   std::cin >> mass;
-  assert(mass > 0.);
+  if (std::cin.fail()) {
+    throw std::runtime_error{"Incorrect Input"};
+  };
 
   std::cout << "Inserisci la costante elastica k\n";
   std::cin >> k;
@@ -53,11 +55,15 @@ int main() {
 
   std::cout << "Inserisci un numero multiplo di 4 di punti materiali\n";
   std::cin >> NoPM;
-  assert(NoPM > 0 && NoPM % 4 == 0);
+  if (std::cin.fail()) {
+    throw std::runtime_error{"Incorrect Input"};
+  };
 
   std::cout << "Inserisci il raggio della configurazione inziale\n";
   std::cin >> r;
-  assert(r > 0.);
+  if (std::cin.fail()) {
+    throw std::runtime_error{"Incorrect Input"};
+  };
 
   std::cout << "Inserisci la velocità angolare \n";
   std::cin >> w;
@@ -225,7 +231,7 @@ int main() {
                                     to_string_with_precision(Total_energy));
       window.draw(string_Total_Energy);
 
-      for (size_t i = 0; i < chain.size(); ++i) {
+      for (size_t i = 0; i != chain.size(); ++i) {
         chain[i].draw(window);
       }
 
@@ -273,7 +279,7 @@ int main() {
       // calcola l'evoluzione della chain e restituisce la chain evoluta dopo
       // steps_per_evolution
 
-      for (size_t i = 0; i < chain.size(); ++i) {
+      for (size_t i = 0; i != chain.size(); ++i) {
         chain[i].draw(window);
       }
 

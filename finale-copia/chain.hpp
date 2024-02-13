@@ -7,10 +7,10 @@
 #include "pm.hpp"
 //--------------------- FREE FUNCTION ---------------------
 
-double d(PM const&, PM const&);
+double d(PM const &, PM const &);
 // distanza tra due PM
 
-vec x(PM const&, PM const&);
+vec x(PM const &, PM const &);
 // vettore che collega i due PM
 
 vec apply_hooke(PM const &, PM const &, Hooke &);
@@ -32,22 +32,7 @@ class Chain {
   // materiale
 
  public:
-  Chain(Hooke const &hooke, double const m, double const r, int const NoPM)
-      : hooke_(hooke) {
-    for (int i = 0; i != NoPM; ++i) {
-      // con questo ciclo genero i dei punti della chain e li dispongo su una
-      // circoneferenza, assegnando la posizioni iniziali utilizzando funzioni
-      // di
-      // i
-
-      PM pm_temp(r * cos(2 * M_PI / NoPM * i), r * sin(2 * M_PI / NoPM * i), 0.,
-                 0., m);
-      // l'argomento di cos e sin sono in modo tale che i punti vengano disposti
-      // su una circonferenza
-
-      ch_.push_back(pm_temp);
-    };
-  };
+  Chain(Hooke const &, double const, double const, int const);
   // parametrized constructor
 
   double kin_energy() const;
@@ -64,10 +49,10 @@ class Chain {
   std::vector<PM> const &state() const;
   // restituisce il vettore contenente gli elementi della chain
 
-  PM operator[](int const);
+  PM operator[](int);
   // per selezionare l'elemento i-esimo della chain
 
-  void evolve(double const , double const w);
+  void evolve(double const, double const);
   // calcola le varie forze per ogni punto della chain e aggiorna le posizione
   // chiamando la funzione evolve
 };
