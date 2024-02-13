@@ -22,7 +22,7 @@ vec apply_CF(PM const& pm1, double const& omega) {
 
 // --------------------- CHAIN MEMBER CLASS ---------------------
 
-Chain::Chain(Hooke& hooke, double const m, double const r, int const NoPM)
+Chain::Chain(Hooke const& hooke, double const m, double const r, int const NoPM)
     : hooke_(hooke) {
   assert(m >= 0.);
   assert(r >= 0.);
@@ -32,6 +32,7 @@ Chain::Chain(Hooke& hooke, double const m, double const r, int const NoPM)
     // con questo ciclo genero i dei punti della chain e li dispongo su una
     // circoneferenza, assegnando la posizioni iniziali utilizzando funzioni di
     // i
+
     PM pm_temp(r * cos(2 * M_PI / NoPM * i), r * sin(2 * M_PI / NoPM * i), 0.,
                0., m);
     // l'argomento di cos e sin sono in modo tale che i punti vengano disposti
@@ -39,8 +40,6 @@ Chain::Chain(Hooke& hooke, double const m, double const r, int const NoPM)
 
     ch_.push_back(pm_temp);
   };
-  std::cout << "distanza tra i primi due punti : " << x(ch_[0], ch_[1]).norm()
-            << '\n';
 }
 
 PM Chain::solve(PM pm, vec f, double const delta_t) const {
@@ -49,43 +48,30 @@ PM Chain::solve(PM pm, vec f, double const delta_t) const {
   auto const x = pm.get_pos() + (v + 0.5 * a * delta_t) * delta_t;
 
   return PM(x.get_x(), x.get_y(), v.get_x(), v.get_y(), pm.get_m());
-}
+};
 
 double Chain::kin_energy() const {
-  double kin_en = 0;
+  double kin_en{};
   for (auto const& i : ch_) {
     kin_en += 0.5 * i.get_m() * pow(i.get_vel().norm(), 2);
   }
   return kin_en;
-}
-// calcola l'energia cinetica totale della corda come somma di tutti i
-// contributi di tutti gli elementi dati da K=0.5*m*v^2
+};
 
 double Chain::pot_energy() const {
-  double pot_en = 0;
-  for (auto it = ch_.begin(); it != std::prev(ch_.end()); ++it) {
+  double pot_en{};
+  for (auto it = ch_.begin(); it != ch_.end(); ++it) {
     pot_en += 0.5 * hooke_.get_k() *
               pow((x(*it, *(it + 1)) - hooke_.get_lv()).norm(), 2);
   }
-  pot_en +=
-      0.5 * hooke_.get_k() *
-      pow((x(*(std::prev(ch_.end())), *(ch_.begin())) - hooke_.get_lv()).norm(),
-          2);
-
-  std::cout << "get_lv: "
-            << (hooke_.get_lv() - x(ch_[ch_.size() - 1], ch_[0])).norm()
-            << " pot en: " << pot_en << '\n';
-
   return pot_en;
-}
-// calcola l'energia cinetica totale della corda come somma di tutti i
-// contributi di tutti gli elementi dati da U=0.5*k*dx^2
+};
 
-std::size_t Chain::size() const { return ch_.size(); }
+std::size_t Chain::size() const { return ch_.size(); };
 
 void Chain::push_back(PM const& pm) { ch_.push_back(pm); }
 
-std::vector<PM> const& Chain::state() const { return ch_; }
+std::vector<PM> const& Chain::state() const { return ch_; };
 
 PM Chain::operator[](int i) { return ch_[i]; }
 

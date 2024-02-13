@@ -17,14 +17,14 @@ class PM {  // Punto Materiale
   PM(double p_x, double p_y, double v_x, double v_y, double m)
       : pos_{p_x, p_y}, vel_{v_x, v_y}, m_(m) {
     // aggiorna le caratteristiche del punto materiale
-    s.setRadius(4);
+    s.setRadius(3);
     s.setPosition(pos_.get_x(), pos_.get_y());
     s.setFillColor(sf::Color::White);
   }  // parametrized constructor date le coordinate di posizione e velocità e
      // massa come argomenti
 
   PM(vec x, vec y, double m) : pos_(x), vel_(y), m_(m) {
-    s.setRadius(4);
+    s.setRadius(3);
     s.setPosition(pos_.get_x(), pos_.get_y());
     s.setFillColor(sf::Color::White);
   }  // parametrized constructor dati i vettori posizione e velocità e massa

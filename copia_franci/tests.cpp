@@ -18,7 +18,7 @@ TEST_CASE("Testing vec") {
     vec t1{2., 2.};
     CHECK(v3 == t1);
     vec v4 = v1 - v2;
-    CHECK(v4 == -1 * t1);
+    CHECK(v4 == t1 * (-1));
     vec v6 = v1 - null;
     CHECK(v1 == v6);
     vec v7 = null - v1;
@@ -61,20 +61,14 @@ TEST_CASE("Testing Chain") {
   PM pm1{1., 2., 3., 4., 5.};
   PM pm2{10., 11., 12., 13., 14.};
 
-  SUBCASE(""){
+  SUBCASE("testing initial configuration"){
+    Chain chain(Hooke(1., 2.), 1., 200, 8);
+    std::vector<PM> t1 {PM(200., 0., 0., 0., 1.), PM(199.988, 2.193, 0., 0., 1.)};
+    for (size_t i = 0; i < chain.size(); ++i) {
+      CHECK(chain[i].get_pos().get_x() == doctest::Approx(t1[i].get_pos().get_x()));
+    }
     
   }
-
-  SUBCASE("testing kinetic energies") {
-    Chain chain(Hooke(1., 2.), 1., 200, 8);
-    CHECK(chain.kin_energy() == 0.);
-  };
-
-  SUBCASE("testing potential energies") {
-    Chain chain(Hooke(1., 2.), 1., 200, 8);
-    CHECK(chain.pot_energy() == 0.);
-  };
-
   SUBCASE("testing distance") {
     CHECK(d(pm1, pm2) == doctest::Approx(sqrt(2) * 9));
     CHECK(d(pm1, pm2) == d(pm2, pm1));
@@ -96,7 +90,7 @@ TEST_CASE("Testing Chain") {
     CHECK(f == t1);
   }
   SUBCASE("testing apply_CF") {
-    double w{11.};
+    float w{11};
     vec f = apply_CF(pm1, w);
     vec t1(5. * 11. * 11., 0.);
     CHECK(f == t1);

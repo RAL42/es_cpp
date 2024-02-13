@@ -72,8 +72,7 @@ int main() {
   };
 
   // calcola i vari parametri per la molla "hooke" e la "chain"
-
-  double const rest_length = sqrt(2 * r * r * (1 - cos(2 * M_PI / NoPM)));
+  double const rest_length{2 * M_PI / NoPM * r};
   // la lunghezza a riposo è data dalla distanza dei punti nella condizione
   // iniziale
 
@@ -83,7 +82,6 @@ int main() {
 
   std::cout << "m=" << mass << " k=" << k << " NoPM=" << NoPM << " w=" << w
             << '\n';
-  std::cout << "lunghezza a riposo : " << rest_length << '\n';
 
   auto const delta_t{sf::milliseconds(1)};
   int const fps{60};
@@ -216,15 +214,13 @@ int main() {
       window.draw(string_steps);
 
       // calcolo le varie energie, le riscalo, e poi le stampo a schermo
-      double Total_Kinetic_Energy{};
-      Total_Kinetic_Energy = chain.kin_energy() * .000001;
+      auto Total_Kinetic_Energy = chain.kin_energy() * .000001;
       string_Kinetic_Energy.setString(
           "Total kinetic energy is " +
           to_string_with_precision(Total_Kinetic_Energy));
       window.draw(string_Kinetic_Energy);
 
-      double Total_Potential_Energy{};
-      Total_Potential_Energy = chain.pot_energy() * .000001;
+      auto Total_Potential_Energy = chain.pot_energy() * .000001;
       string_Potential_Energy.setString(
           "Total potential energy is " +
           to_string_with_precision(Total_Potential_Energy));
@@ -262,15 +258,13 @@ int main() {
       window.draw(string_steps);
 
       // calcolo le varie energie, le riscalo, e poi le stampo a schermo
-      double Total_Kinetic_Energy{};
-      Total_Kinetic_Energy = chain.kin_energy() * .000001;
+      auto Total_Kinetic_Energy = chain.kin_energy() * .000001;
       string_Kinetic_Energy.setString(
           "Total kinetic energy is " +
           to_string_with_precision(Total_Kinetic_Energy));
       window.draw(string_Kinetic_Energy);
 
-      double Total_Potential_Energy{};
-      Total_Potential_Energy = chain.pot_energy() * .000001;
+      auto Total_Potential_Energy = chain.pot_energy() * .000001;
       string_Potential_Energy.setString(
           "Total potential energy is " +
           to_string_with_precision(Total_Potential_Energy));

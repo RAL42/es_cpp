@@ -22,6 +22,7 @@ class vec {
   vec &operator-=(vec const &);
   vec &operator*=(double const);
   vec &operator/=(double const);
+  bool operator==(vec const &);
 
   double get_x() const;
   // restituisce la componente x
@@ -42,6 +43,5 @@ vec operator-(vec const &, vec const &);
 vec operator*(vec const &, double const);
 vec operator*(double const, vec const &);
 vec operator/(vec const &, double const);
-bool operator==(vec const &, vec const &);
 
 #endif

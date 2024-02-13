@@ -72,18 +72,18 @@ int main() {
   };
 
   // calcola i vari parametri per la molla "hooke" e la "chain"
-
-  double const rest_length = sqrt(2 * r * r * (1 - cos(2 * M_PI / NoPM)));
+  double const theta{2 * M_PI / NoPM};
+  double const rest_length{theta * r};
   // la lunghezza a riposo è data dalla distanza dei punti nella condizione
   // iniziale
 
   Hooke spring{k, rest_length};
 
-  Chain chain{spring, mass, r, NoPM};
+  Chain chain{spring};
+  chain.initial_config(theta, mass, r, NoPM);
 
   std::cout << "m=" << mass << " k=" << k << " NoPM=" << NoPM << " w=" << w
             << '\n';
-  std::cout << "lunghezza a riposo : " << rest_length << '\n';
 
   auto const delta_t{sf::milliseconds(1)};
   int const fps{60};
@@ -223,7 +223,7 @@ int main() {
           to_string_with_precision(Total_Kinetic_Energy));
       window.draw(string_Kinetic_Energy);
 
-      double Total_Potential_Energy{};
+  /*    double Total_Potential_Energy{};
       Total_Potential_Energy = chain.pot_energy() * .000001;
       string_Potential_Energy.setString(
           "Total potential energy is " +
@@ -234,8 +234,8 @@ int main() {
       string_Total_Energy.setString("Total energy is " +
                                     to_string_with_precision(Total_energy));
       window.draw(string_Total_Energy);
-
-      for (size_t i = 0; i != chain.size(); ++i) {
+*/
+      for (long unsigned int i = 0; i < chain.size(); ++i) {
         chain[i].draw(window);
       }
 
@@ -261,7 +261,6 @@ int main() {
       string_steps.setString("W is " + to_string_with_precision(w));
       window.draw(string_steps);
 
-      // calcolo le varie energie, le riscalo, e poi le stampo a schermo
       double Total_Kinetic_Energy{};
       Total_Kinetic_Energy = chain.kin_energy() * .000001;
       string_Kinetic_Energy.setString(
@@ -269,7 +268,7 @@ int main() {
           to_string_with_precision(Total_Kinetic_Energy));
       window.draw(string_Kinetic_Energy);
 
-      double Total_Potential_Energy{};
+      /*double Total_Potential_Energy{};
       Total_Potential_Energy = chain.pot_energy() * .000001;
       string_Potential_Energy.setString(
           "Total potential energy is " +
@@ -280,12 +279,12 @@ int main() {
       string_Total_Energy.setString("Total energy is " +
                                     to_string_with_precision(Total_energy));
       window.draw(string_Total_Energy);
-
+*/
       auto const state = evolve(chain, steps_per_evolution, delta_t, w);
       // calcola l'evoluzione della chain e restituisce la chain evoluta dopo
       // steps_per_evolution
 
-      for (size_t i = 0; i != chain.size(); ++i) {
+      for (long unsigned int i = 0; i < chain.size(); ++i) {
         chain[i].draw(window);
       }
 

@@ -32,13 +32,13 @@ class Chain {
   // materiale
 
  public:
-  Chain(Hooke &, double const, double const, int const);
+  Chain(Hooke const &, double const, double const, int const);
   // parametrized constructor
 
   double kin_energy() const;
-  // restituisce l'energia cinetica totale della corda
+  // restituisce l'energia cinetica totale
   double pot_energy() const;
-  // restituisce l'energia potenziale totale della corda
+  // restituisce l'energia potenziale totale
 
   size_t size() const;
   // restituisce il numero di elementi della chain

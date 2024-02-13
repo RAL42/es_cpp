@@ -23,6 +23,10 @@ vec &vec::operator/=(double const scalar) {
   return *this;
 }
 
+bool vec::operator==(vec const &a) {
+  return v_.x == a.get_x() && v_.y == a.get_y();
+}
+
 double vec::get_x() const { return v_.x; };
 
 double vec::get_y() const { return v_.y; };
@@ -61,6 +65,4 @@ vec operator/(vec const &a, double const b) {
   return vec{a.get_x() / b, a.get_y() / b};
 }
 
-bool operator==(vec const &a, vec const &b) {
-  return a.get_x() == b.get_x() && a.get_y() == b.get_y();
-}
+
